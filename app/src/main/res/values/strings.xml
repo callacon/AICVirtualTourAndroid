@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">AICVirtualTour</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="department_list_fragment_label">DepartmentListViewFragment</string>
+    <string name="artwork_list_fragment_label">ArtworkListViewFragment</string>
+    <string name="artwork_fragment_label">ArtworkViewFragment</string>
+    <string name="artwork_search_fragment_label">ArtworkSearchViewFragment</string>
+
+    <string name="title">Title</string>
+
+    <string name="artwork_image_description">Image for artwork</string>
+    <string name="logo_description">Art Institute of Chicago icon</string>
+    <string name="department_list_header">Departments</string>
+    <string name="page_button_description">Pagination Button</string>
+    <string name="search_button_description">Search Button</string>
+    <string name="search_bar_placeholder">Search (ex: "Picasso")</string>
+</resources>

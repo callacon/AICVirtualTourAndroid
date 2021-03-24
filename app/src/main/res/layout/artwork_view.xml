@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/artworkImage"
+        android:layout_width="match_parent"
+        android:layout_height="282dp"
+        android:layout_marginBottom="456dp"
+        android:contentDescription="@string/artwork_image_description"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/backgrounds/scenic" />
+
+    <TextView
+        android:id="@+id/artworkTitleText"
+        android:layout_width="397dp"
+        android:layout_height="67dp"
+        android:layout_marginStart="8dp"
+        android:textAlignment="textStart"
+        android:textColor="@color/aic_red"
+        android:textIsSelectable="false"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/artworkImage" />
+
+    <TextView
+        android:id="@+id/artworkDateDisplay"
+        android:layout_width="385dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="8dp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/artworkTitleText" />
+
+    <TextView
+        android:id="@+id/artworkArtistDisplay"
+        android:layout_width="385dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/artworkDateDisplay" />
+
+    <TextView
+        android:id="@+id/artworkMediumDisplay"
+        android:layout_width="385dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/artworkArtistDisplay" />
+
+    <TextView
+        android:id="@+id/artworkDimensions"
+        android:layout_width="385dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/artworkMediumDisplay" />
+</androidx.constraintlayout.widget.ConstraintLayout>
