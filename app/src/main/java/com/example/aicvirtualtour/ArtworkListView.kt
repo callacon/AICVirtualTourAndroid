@@ -15,7 +15,10 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.*
 
 /**
- * A simple [Fragment] subclass as the second destination in the navigation.
+ * This Fragment displays this list of artwork from a selected department with 25 elements per page.
+ * When a department is selected, ArtworkListView takes its name and id as SafeArgs.
+ * Name is displayed at the top of the list and the department's id is used for the
+ * getArtworksInDepartment API call.
  */
 class ArtworkListView : Fragment(), CoroutineScope by MainScope() {
 
@@ -33,10 +36,16 @@ class ArtworkListView : Fragment(), CoroutineScope by MainScope() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Get arguments passed from DepartmentListView
         val args: ArtworkListViewArgs by navArgs()
+        // Used in API calls to populate data in this view
         departmentId = args.DepartmentId
+        // Populate header with current department name
         view.findViewById<TextView>(R.id.departmentNameText).text = args.DepartmentTitle
+
         view.findViewById<ImageButton>(R.id.pageForwardButton).setOnClickListener{
+            // Up the page number and repopulate with data from next page
             currentPage++
             launch{ loadPageContent() }
         }
@@ -63,9 +72,9 @@ class ArtworkListView : Fragment(), CoroutineScope by MainScope() {
     }
 
     /**
-     *  Runs API call to get a page of results for the current department.
-     *  Called once when the view is loaded and every time a page button is touched to
-     *  update the content for the next page
+     *  Calls API to get a page of results for the entered search query.
+     *  Called once when the view is loaded with SafeArgs and additionally when a page button is
+     *  touched to update the content for the next page.
      */
     private suspend fun loadPageContent() {
         coroutineScope {
@@ -74,12 +83,17 @@ class ArtworkListView : Fragment(), CoroutineScope by MainScope() {
                     val response =
                         AICDataManager.apiClient.getArtworksInDepartment(departmentId, currentPage)
                     if (response.isSuccessful && response.body() != null) {
+                        // Get current page number and total pages from API call, update the
+                        // pagination display.
                         response.body()!!.pagination.let { pagination = it }
                         updatePaginationDisplay()
+                        // API returns a list of artwork IDs. These have the title and an ID that
+                        // is passed to ArtworkView to get all of an artwork's details.
                         response.body()!!.ids.let { artworkIds = it }
                     }
                     val artworkListView =
                         view?.findViewById(R.id.artworkSearchView) as RecyclerView
+                    // Bind data to RecyclerView elements with adapter and set layout
                     artworkListView.apply {
                         layoutManager = LinearLayoutManager(activity)
                         adapter = ArtworkListAdapter(artworkIds)

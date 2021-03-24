@@ -5,10 +5,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * ViewHolder for a RecyclerView list item on the ArtworkList/ArtworkSearch views
+ */
 class ArtworkIdViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
     RecyclerView.ViewHolder(inflater.inflate(R.layout.list_item, parent, false)) {
     private var title: TextView? = null
-
 
     init {
         title = itemView.findViewById(R.id.list_title)

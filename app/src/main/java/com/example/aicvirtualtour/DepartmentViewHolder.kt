@@ -5,6 +5,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
+/**
+ * ViewHolder for a RecyclerView list item on the DepartmentListView
+ */
 class DepartmentViewHolder(inflater: LayoutInflater, parent: ViewGroup) :
         RecyclerView.ViewHolder(inflater.inflate(R.layout.list_item, parent, false)) {
     private var title: TextView? = null

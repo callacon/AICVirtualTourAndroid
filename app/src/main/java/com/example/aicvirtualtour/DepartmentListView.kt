@@ -20,7 +20,12 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 
 /**
- * A simple [Fragment] subclass as the default destination in the navigation.
+ * This Fragment acts as the "home page" for the app. It displays an alphabetical list of departments
+ * and a search bar for keyword searches.
+ * Selecting a department navigates to ArtworkListView which takes the department's name and id as
+ * arguments and then displays a list of the works in that department.
+ * Entering a keyword(s) in the search bar will navigate to ArtworkSearchView, which displays the list
+ * of results for the search query.
  */
 class DepartmentListView : Fragment(), CoroutineScope by MainScope() {
 
@@ -63,14 +68,21 @@ class DepartmentListView : Fragment(), CoroutineScope by MainScope() {
                 val response = AICDataManager.apiClient.getDepartments()
                 if (response.isSuccessful && response.body() != null) {
                     response.body()!!.departments.let {
+                        // Save list of departments (in alphabetical order)
                         departments = it.toMutableList()
                         departments.sortBy { d -> d.title }
                     }
                     val departmentListView = view.findViewById(R.id.departmentListView) as RecyclerView
+                    // Bind data to RecyclerView elements with adapter and set layout
                     departmentListView.apply {
                         layoutManager = LinearLayoutManager(activity)
                         adapter = DepartmentListAdapter(departments)
-                        addItemDecoration(DividerItemDecoration(this.context, DividerItemDecoration.VERTICAL))
+                        addItemDecoration(
+                            DividerItemDecoration(
+                                this.context,
+                                DividerItemDecoration.VERTICAL
+                            )
+                        )
                     }
                 }
             } catch (e: Exception) {
@@ -79,6 +91,9 @@ class DepartmentListView : Fragment(), CoroutineScope by MainScope() {
         }
     }
 
+    /**
+     * Hide/show the search bar when the search icon (magnifying glass) is tapped.
+     */
     private fun searchButtonTapped() {
         searchBarDisplayed = !searchBarDisplayed
         view?.findViewById<TextView>(R.id.searchBar)?.isVisible = searchBarDisplayed

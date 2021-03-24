@@ -18,6 +18,11 @@ object AICDataManager {
         .build()
         .create(AICApiClient::class.java)
 
+    /**
+     * Takes an image ID and calls AIC's IIIF API to get an image. Picasso is a framework used for
+     * inserting images obtained through an HTTP request into an ImageView.
+     * More documentation on Picasso here: https://square.github.io/picasso/
+     */
     suspend fun loadImageFromPicasso(imageId: String): RequestCreator? {
         return Picasso.get().load("https://www.artic.edu/iiif/2/$imageId/full/843,/0/default.jpg")
     }

@@ -17,7 +17,8 @@ import kotlinx.coroutines.*
 import org.w3c.dom.Text
 
 /**
- * A simple [Fragment] subclass as the second destination in the navigation.
+ * Fragment to display list of results for query from search bar. Takes search query as argument
+ * and calls API to populate view with results.
  */
 class ArtworkSearchView : Fragment(), CoroutineScope by MainScope() {
 
@@ -35,9 +36,14 @@ class ArtworkSearchView : Fragment(), CoroutineScope by MainScope() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val args: ArtworkSearchViewArgs by navArgs()
+        // Get search query entered in search bar. Update page title display and save query to use
+        // in API call.
         searchQuery = args.SearchQuery
+        // Populate header with search query
         view.findViewById<TextView>(R.id.departmentNameText).text = "Showing results for \"$searchQuery\""
+
         view.findViewById<ImageButton>(R.id.pageForwardButton).setOnClickListener{
             currentPage++
             launch{ loadPageContent() }
@@ -50,14 +56,25 @@ class ArtworkSearchView : Fragment(), CoroutineScope by MainScope() {
         launch{ loadPageContent() }
     }
 
+    /**
+     * Updates text for pagination and disables arrow buttons when they've reached
+     * paging bounds.
+     */
     private fun updatePaginationDisplay() {
         val pageBackButton = view?.findViewById<ImageButton>(R.id.pageBackButton)
+        val pageForwardButton = view?.findViewById<ImageButton>(R.id.pageForwardButton)
         val paginationText = view?.findViewById<TextView>(R.id.paginationText)
 
         pageBackButton?.isClickable = pagination.currentPage > 1
+        pageForwardButton?.isClickable = pagination.currentPage < pagination.totalPages
         paginationText?.text = "Page ${pagination.currentPage} of ${pagination.totalPages}"
     }
 
+    /**
+     *  Calls API to get a page of results for the entered search query.
+     *  Called once when the view is loaded with SafeArgs and additionally when a page button is
+     *  touched to update the content for the next page.
+     */
     private suspend fun loadPageContent() {
         coroutineScope {
             launch(Dispatchers.Main) {
@@ -65,12 +82,17 @@ class ArtworkSearchView : Fragment(), CoroutineScope by MainScope() {
                     val response =
                         AICDataManager.apiClient.searchArtwork(searchQuery, currentPage)
                     if (response.isSuccessful && response.body() != null) {
+                        // Get current page number and total pages from API call, update the
+                        // pagination display.
                         response.body()!!.pagination.let { pagination = it }
                         updatePaginationDisplay()
+                        // API returns a list of artwork IDs. These have the title and an ID that
+                        // is passed to ArtworkView to get all of an artwork's details.
                         response.body()!!.ids.let { artworkIds = it }
                     }
                     val artworkSearchView =
                         view?.findViewById(R.id.artworkSearchView) as RecyclerView
+                    // Bind data to RecyclerView elements with adapter and set layout
                     artworkSearchView.apply {
                         layoutManager = LinearLayoutManager(activity)
                         adapter = ArtworkSearchAdapter(artworkIds)
