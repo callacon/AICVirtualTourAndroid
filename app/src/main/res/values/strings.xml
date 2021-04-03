@@ -18,6 +18,7 @@
 
     <!-- Artwork List -->
     <string name="page_button_description">Pagination Button</string>
+    <string name="pagination_text">Page %1$d of %2$d</string>
 
     <!-- Artwork View -->
     <string name="artwork_image_description">Image for artwork</string>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ArtworkListView">
+    tools:context=".Fragments.ArtworkListView">
 
     <ImageButton
         android:id="@+id/pageBackButton"
@@ -28,13 +28,13 @@
         android:layout_marginBottom="78dp"
         android:contentDescription="@string/logo_description"
         android:src="@drawable/aic_logo"
-        app:layout_constraintBottom_toTopOf="@+id/artworkSearchView"
+        app:layout_constraintBottom_toTopOf="@+id/artworkList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/artworkSearchView"
+        android:id="@+id/artworkList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="214dp"
@@ -43,7 +43,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/list_item" />
+        tools:listitem="@layout/artwork_list_item" />
 
     <TextView
         android:id="@+id/departmentNameText"
@@ -82,5 +82,16 @@
         android:textAlignment="center"
         app:layout_constraintEnd_toStartOf="@+id/pageForwardButton"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:indeterminate="true"
+        android:visibility="gone"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

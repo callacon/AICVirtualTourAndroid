@@ -1,4 +1,4 @@
-package com.example.aicvirtualtour
+package com.example.aicvirtualtour.models
 
 import com.squareup.moshi.Json
 

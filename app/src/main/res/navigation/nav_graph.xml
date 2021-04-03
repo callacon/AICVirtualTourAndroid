@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/departmentListView">
+    app:startDestination="@id/departmentListFragment">
 
     <fragment
-        android:id="@+id/departmentListView"
-        android:name="com.example.aicvirtualtour.DepartmentListView"
+        android:id="@+id/departmentListFragment"
+        android:name="com.example.aicvirtualtour.fragments.DepartmentListFragment"
         android:label="@string/department_list_fragment_label"
-        tools:layout="@layout/department_list_view">
+        tools:layout="@layout/department_list">
         <action
             android:id="@+id/action_DepartmentList_to_SearchArtwork"
             app:destination="@id/artworkSearchView" />
@@ -19,13 +19,13 @@
     </fragment>
     <fragment
         android:id="@+id/artworkListView"
-        android:name="com.example.aicvirtualtour.ArtworkListView"
+        android:name="com.example.aicvirtualtour.fragments.ArtworkListFragment"
         android:label="@string/artwork_list_fragment_label"
-        tools:layout="@layout/artwork_list_view">
+        tools:layout="@layout/artwork_list">
 
         <action
             android:id="@+id/action_ArtworkList_to_DepartmentList"
-            app:destination="@id/departmentListView" />
+            app:destination="@id/departmentListFragment" />
         <action
             android:id="@+id/action_ArtworkList_to_Artwork"
             app:destination="@id/artworkView" />
@@ -44,7 +44,7 @@
 
         <action
             android:id="@+id/action_SearchArtwork_to_DepartmentList"
-            app:destination="@id/departmentListView" />
+            app:destination="@id/departmentListFragment" />
         <action
             android:id="@+id/action_SearchArtwork_to_Artwork"
             app:destination="@id/artworkView" />
@@ -54,9 +54,9 @@
     </fragment>
     <fragment
         android:id="@+id/artworkView"
-        android:name="com.example.aicvirtualtour.ArtworkView"
+        android:name="com.example.aicvirtualtour.fragments.ArtworkFragment"
         android:label="@string/artwork_fragment_label"
-        tools:layout="@layout/artwork_view">
+        tools:layout="@layout/artwork">
 
         <action
             android:id="@+id/action_Artwork_to_ArtworkList"
