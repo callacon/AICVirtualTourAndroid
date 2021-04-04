@@ -1,5 +1,8 @@
 package com.example.aicvirtualtour.models
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 
 /**
@@ -17,11 +20,14 @@ data class ArtworkIds(
     @field:Json(name = "data") val ids: List<ArtworkId>
 )
 
+@Entity(tableName = "artworks")
 data class ArtworkId(
+    @PrimaryKey
     @field:Json(name = "id") val id: Int,
     @field:Json(name = "title") val title: String
 )
 
+@Entity(tableName = "pagination")
 data class Pagination(
     @field:Json(name = "total") val total: Int,
     @field:Json(name = "limit") val itemsPerPage: Int,

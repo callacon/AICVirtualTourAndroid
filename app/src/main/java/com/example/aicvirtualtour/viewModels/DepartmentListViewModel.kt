@@ -1,44 +1,47 @@
 package com.example.aicvirtualtour.viewModels
 
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.aicvirtualtour.data.AICDataSource
+import com.example.aicvirtualtour.data.AICRepository
+import com.example.aicvirtualtour.data.ResponseState
 import com.example.aicvirtualtour.models.Department
-import com.example.aicvirtualtour.models.Departments
+import com.example.aicvirtualtour.viewModels.DepartmentListEvent.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import retrofit2.Response
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
 class DepartmentListViewModel @Inject constructor(
-    private val dataSource: AICDataSource
+    private val repository: AICRepository
 ) : ViewModel() {
-    fun departments() = performNetworkCall<List<Department>>(dataSource.getDepartments())
 
-    private fun <T> performNetworkCall(call: suspend () -> Response<T>) = viewModelScope.launch {
-        loading()
-        try {
-            val response = call()
-            if (response.isSuccessful && response.body() != null) {
-                success(response.body())
+    private val _responseState: MutableLiveData<ResponseState<List<Department>>> = MutableLiveData()
+    val responseState: LiveData<ResponseState<List<Department>>>
+        get() = _responseState
+
+    fun performEvent(departmentListEvent: DepartmentListEvent) {
+        viewModelScope.launch {
+            when(departmentListEvent) {
+                is GetDepartments -> {
+                    repository.getDepartments().onEach { responseState ->
+                        _responseState.value = responseState
+                    }.launchIn(viewModelScope)
+                }
+
+                is None -> {}
             }
-        } catch (e: Exception) {
-            error(e.message.toString())
         }
-
     }
+}
 
-    fun <T> success(data: T): T {
 
-    }
+sealed class DepartmentListEvent {
+    object GetDepartments: DepartmentListEvent()
 
-    fun loading() {
-
-    }
-
-    fun error(message: String): String {
-        return message
-    }
+    object None: DepartmentListEvent()
 }

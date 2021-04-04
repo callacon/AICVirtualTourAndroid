@@ -1,21 +1,25 @@
 package com.example.aicvirtualtour.di
 
 import android.content.Context
+import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.aicvirtualtour.API_BASE_URL
+import com.example.aicvirtualtour.ApplicationComponent
 import com.example.aicvirtualtour.BaseApplication
 import com.example.aicvirtualtour.data.*
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module
-@InstallIn(AppComponent::class)
+@InstallIn(SingletonComponent::class)
 object AppModule {
 
     @Singleton
@@ -28,9 +32,10 @@ object AppModule {
     @Provides
     fun provideRepository(
         dataSource: AICDataSource,
-        dao: AICDao
+        departmentDao: DepartmentDao,
+        artworkDao: ArtworkDao
     ): AICRepository {
-        return AICRepository(dataSource, dao)
+        return AICRepository(dataSource, departmentDao, artworkDao)
     }
 
     @Singleton
@@ -53,13 +58,24 @@ object AppModule {
 
     @Singleton
     @Provides
-    fun provideDatabase(app: BaseApplication): RoomDatabase {
-        return AppDatabase.getInstance(app)
+    fun provideDatabase(@ApplicationContext context: Context): AICDatabase {
+        return Room.databaseBuilder(
+            context,
+            AICDatabase::class.java,
+            AICDatabase.DB_NAME)
+            .fallbackToDestructiveMigration()
+            .build()
     }
 
     @Singleton
     @Provides
-    fun provideDao(db: AppDatabase): AICDao {
-        return db.aicDao()
+    fun provideDepartmentDao(db: AICDatabase): DepartmentDao {
+        return db.departmentDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideArtworkDao(db: AICDatabase): ArtworkDao {
+        return db.artworkDao()
     }
 }

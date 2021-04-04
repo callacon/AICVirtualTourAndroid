@@ -11,14 +11,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.navArgs
-import com.example.aicvirtualtour.viewModels.ArtworkViewModel
+//import com.example.aicvirtualtour.viewModels.ArtworkViewModel
 import com.example.aicvirtualtour.R
-import com.example.aicvirtualtour.data.Result
+//import com.example.aicvirtualtour.data.Result
 import com.example.aicvirtualtour.models.Artwork
-
+//
 class ArtworkFragment : Fragment() {
 
-    private val viewModel: ArtworkViewModel by viewModels()
+    //private val viewModel: ArtworkViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,10 +30,10 @@ class ArtworkFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Get the artwork's ID for API call
-        val args: ArtworkFragmentArgs by navArgs()
-        val artworkId = args.ArtworkId
-        viewModel.id = artworkId
+//        // Get the artwork's ID for API call
+//        val args: ArtworkFragmentArgs by navArgs()
+//        val artworkId = args.ArtworkId
+//        viewModel.id = artworkId
 
         setupArtworkDisplay()
 
@@ -58,31 +58,31 @@ class ArtworkFragment : Fragment() {
     }
 
     private fun setupArtworkDisplay() {
-        lateinit var artwork: Artwork
-        val progressBar = view?.findViewById<ProgressBar>(R.id.progress_bar)
-
-        viewModel.artwork?.observe(viewLifecycleOwner, Observer {
-            when(it.status) {
-                Result.Status.SUCCESS -> {
-                    progressBar?.visibility = View.GONE
-                    artwork = it.data!!
-                }
-                Result.Status.LOADING ->
-                    progressBar?.visibility = View.VISIBLE
-            }
-        })
-
-        viewModel.artwork?.let {
-            view?.findViewById<TextView>(R.id.artworkTitleText)?.let { it.text = artwork.title }
-            view?.findViewById<TextView>(R.id.artworkDateDisplay)?.let { it.text = artwork.dateCreated }
-            view?.findViewById<TextView>(R.id.artworkArtistDisplay)?.let { it.text = artwork.artist }
-            view?.findViewById<TextView>(R.id.artworkMediumDisplay)?.let { it.text = artwork.medium }
-            view?.findViewById<TextView>(R.id.artworkDimensions)?.let { it.text = artwork.dimensions }
-
-            val artworkImage = view?.findViewById(R.id.artworkImage) as ImageView
-            viewModel.getArtworkImageForView(artwork.imageId, artworkImage)
-        }
-
-
+//        lateinit var artwork: Artwork
+//        val progressBar = view?.findViewById<ProgressBar>(R.id.progress_bar)
+//
+//        viewModel.artwork?.observe(viewLifecycleOwner, Observer {
+//            when(it.status) {
+//                Result.Status.SUCCESS -> {
+//                    progressBar?.visibility = View.GONE
+//                    artwork = it.data!!
+//                }
+//                Result.Status.LOADING ->
+//                    progressBar?.visibility = View.VISIBLE
+//            }
+//        })
+//
+//        viewModel.artwork?.let {
+//            view?.findViewById<TextView>(R.id.artworkTitleText)?.let { it.text = artwork.title }
+//            view?.findViewById<TextView>(R.id.artworkDateDisplay)?.let { it.text = artwork.dateCreated }
+//            view?.findViewById<TextView>(R.id.artworkArtistDisplay)?.let { it.text = artwork.artist }
+//            view?.findViewById<TextView>(R.id.artworkMediumDisplay)?.let { it.text = artwork.medium }
+//            view?.findViewById<TextView>(R.id.artworkDimensions)?.let { it.text = artwork.dimensions }
+//
+//            val artworkImage = view?.findViewById(R.id.artworkImage) as ImageView
+//            viewModel.getArtworkImageForView(artwork.imageId, artworkImage)
+//        }
+//
+//
     }
 }

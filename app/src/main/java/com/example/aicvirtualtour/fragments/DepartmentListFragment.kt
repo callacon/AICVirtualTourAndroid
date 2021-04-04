@@ -7,27 +7,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageButton
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.get
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.aicvirtualtour.*
-import com.example.aicvirtualtour.application.ViewModelModule
-import com.example.aicvirtualtour.application.injectViewModel
-import com.example.aicvirtualtour.data.AutoClearedValue
-import com.example.aicvirtualtour.data.Result
-import com.example.aicvirtualtour.databinding.DepartmentListBinding
-import com.example.aicvirtualtour.helper.autoCleared
+import com.example.aicvirtualtour.data.ResponseState
+import com.example.aicvirtualtour.models.Department
+import com.example.aicvirtualtour.viewModels.DepartmentListEvent.*
 import com.example.aicvirtualtour.viewModels.DepartmentListViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 /**
  * This Fragment acts as the "home page" for the app. It displays an alphabetical list of departments
@@ -40,9 +35,9 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class DepartmentListFragment : Fragment() {
 
-    private val binding: DepartmentListBinding by AutoClearedValue()
     private val viewModel: DepartmentListViewModel by viewModels()
-    private lateinit var adapter: DepartmentListAdapter
+    private lateinit var departmentList: RecyclerView
+    private var listAdapter = DepartmentListAdapter(emptyList())
 
     private var searchBarDisplayed = false
 
@@ -57,17 +52,39 @@ class DepartmentListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        departmentList = view.findViewById(R.id.departmentList)
+
         setupObservers()
         setupDepartmentList()
         setupSearchView()
+        viewModel.performEvent(GetDepartments)
+    }
+
+    /**
+     * Observes Result from view model call to repository and displays based on status
+     */
+    private fun setupObservers() {
+        viewModel.responseState.observe(viewLifecycleOwner, Observer { response ->
+            when (response) {
+                is ResponseState.Success<List<Department>> -> {
+                    displayProgressBar(false)
+                    listAdapter.setItems(response.data)
+                }
+                is ResponseState.Error ->
+                    Toast.makeText(requireContext(), "Error receiving departments. Please try again later.", Toast.LENGTH_SHORT).show()
+                is ResponseState.Loading ->
+                    displayProgressBar(true)
+            }
+        })
     }
 
     /**
      * Bind data to RecyclerView elements with adapter and set layout
      */
     private fun setupDepartmentList() {
-        binding.departmentList.apply {
+        departmentList.apply {
             layoutManager = LinearLayoutManager(activity)
+            adapter = listAdapter
             addItemDecoration(
                 DividerItemDecoration(
                     this.context,
@@ -75,24 +92,6 @@ class DepartmentListFragment : Fragment() {
                 )
             )
         }
-    }
-
-    /**
-     * Observes Result from view model call to repository and displays based on status
-     */
-    private fun setupObservers() {
-        viewModel.departments.observe(viewLifecycleOwner, Observer {
-            when (it.status) {
-                Result.Status.SUCCESS -> {
-                    binding.progressBar.visibility = View.GONE
-                    adapter = DepartmentListAdapter(it.data!!)
-                }
-                Result.Status.ERROR ->
-                    Toast.makeText(requireContext(), it.message, Toast.LENGTH_SHORT).show()
-                Result.Status.LOADING ->
-                    binding.progressBar.visibility = View.VISIBLE
-            }
-        })
     }
 
     private fun setupSearchView() {
@@ -107,11 +106,11 @@ class DepartmentListFragment : Fragment() {
                 EditorInfo.IME_ACTION_PREVIOUS,
                 EditorInfo.IME_ACTION_DONE -> {
                     val enteredText = searchBar.text.toString()
-                    if (!enteredText.isBlank()) {
+                    if (enteredText.isNotBlank()) {
                         view?.findNavController()?.navigate(
                             // TODO: make this also navigate to artwork list and rework class to take different amounts of args
                             DepartmentListFragmentDirections.actionDepartmentListToSearchArtwork(
-                                enteredText
+                                "", enteredText, true
                             )
                         )
                     }
@@ -130,4 +129,8 @@ class DepartmentListFragment : Fragment() {
         view?.findViewById<TextView>(R.id.searchBar)?.isVisible = searchBarDisplayed
     }
 
+    private fun displayProgressBar(shouldShow: Boolean) {
+        val progressBar = view?.findViewById<ProgressBar>(R.id.progress_bar)
+        progressBar?.visibility = if(shouldShow) View.VISIBLE else View.GONE
+    }
 }

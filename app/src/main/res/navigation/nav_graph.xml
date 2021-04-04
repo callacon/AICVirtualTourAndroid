@@ -11,58 +11,47 @@
         android:label="@string/department_list_fragment_label"
         tools:layout="@layout/department_list">
         <action
-            android:id="@+id/action_DepartmentList_to_SearchArtwork"
-            app:destination="@id/artworkSearchView" />
+            android:id="@+id/actionDepartmentListToSearchArtwork"
+            app:destination="@id/artworkListFragment" />
         <action
-            android:id="@+id/action_DepartmentList_to_ArtworkList"
-            app:destination="@id/artworkListView" />
+            android:id="@+id/actionDepartmentListToArtworkList"
+            app:destination="@id/artworkListFragment" />
     </fragment>
+
     <fragment
-        android:id="@+id/artworkListView"
+        android:id="@+id/artworkListFragment"
         android:name="com.example.aicvirtualtour.fragments.ArtworkListFragment"
         android:label="@string/artwork_list_fragment_label"
         tools:layout="@layout/artwork_list">
 
         <action
-            android:id="@+id/action_ArtworkList_to_DepartmentList"
+            android:id="@+id/actionArtworkListToDepartmentList"
             app:destination="@id/departmentListFragment" />
         <action
-            android:id="@+id/action_ArtworkList_to_Artwork"
-            app:destination="@id/artworkView" />
+            android:id="@+id/actionArtworkListToArtwork"
+            app:destination="@id/artworkFragment" />
         <argument
-            android:name="DepartmentId"
+            android:name="departmentId"
             app:argType="string" />
         <argument
-            android:name="DepartmentTitle"
+            android:name="departmentTitle"
             app:argType="string" />
+        <argument
+            android:name="isSearchView"
+            app:argType="boolean" />
     </fragment>
-    <fragment
-        android:id="@+id/artworkSearchView"
-        android:name="com.example.aicvirtualtour.ArtworkSearchView"
-        android:label="@string/artwork_search_fragment_label"
-        tools:layout="@layout/artwork_search_view">
 
-        <action
-            android:id="@+id/action_SearchArtwork_to_DepartmentList"
-            app:destination="@id/departmentListFragment" />
-        <action
-            android:id="@+id/action_SearchArtwork_to_Artwork"
-            app:destination="@id/artworkView" />
-        <argument
-            android:name="SearchQuery"
-            app:argType="string" />
-    </fragment>
     <fragment
-        android:id="@+id/artworkView"
+        android:id="@+id/artworkFragment"
         android:name="com.example.aicvirtualtour.fragments.ArtworkFragment"
         android:label="@string/artwork_fragment_label"
         tools:layout="@layout/artwork">
 
         <action
             android:id="@+id/action_Artwork_to_ArtworkList"
-            app:destination="@id/artworkView" />
+            app:destination="@id/artworkFragment" />
         <argument
-            android:name="ArtworkId"
+            android:name="artworkId"
             app:argType="integer" />
     </fragment>
 </navigation>
