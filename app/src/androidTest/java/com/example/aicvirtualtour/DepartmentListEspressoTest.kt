@@ -12,7 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import org.junit.Test
 import java.util.concurrent.TimeoutException
 
-class DepartmentListViewTest: TestBase() {
+class DepartmentListEspressoTest: EspressoBase() {
 
     @Test
     fun selectingDepartment_ShowsArtworkList() {

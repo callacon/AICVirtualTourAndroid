@@ -17,7 +17,7 @@ import java.util.concurrent.TimeoutException
 /**
  * Base class for espresso tests
  */
-abstract class TestBase {
+abstract class EspressoBase {
     /**
      * Utility function to wait for a view to appear.
      * Sometimes Espresso gets antsy and tried to tap a view before the API returns its data.

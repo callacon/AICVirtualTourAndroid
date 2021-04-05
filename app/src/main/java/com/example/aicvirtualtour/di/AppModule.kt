@@ -13,6 +13,7 @@ import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -47,8 +48,11 @@ object AppModule {
     @Singleton
     @Provides
     fun provideApiClient(): AICApiClient {
+        val client = OkHttpClient.Builder()
+            .connectTimeout(100, TimeUnit.SECONDS)
+            .readTimeout(100, TimeUnit.SECONDS).build();
         return Retrofit.Builder().baseUrl(API_BASE_URL)
-            .client(OkHttpClient())
+            .client(client)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
             .create(AICApiClient::class.java)

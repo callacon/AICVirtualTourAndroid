@@ -12,7 +12,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import org.junit.Test
 
-class ArtworkViewTest: TestBase() {
+class ArtworkEspressoTest: EspressoBase() {
     @Test
     fun artworkListSelection_DisplaysInArtworkView() {
         ActivityScenario.launch(MainActivity::class.java)

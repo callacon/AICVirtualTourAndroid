@@ -15,7 +15,9 @@
             app:destination="@id/artworkListFragment" />
         <action
             android:id="@+id/actionDepartmentListToArtworkList"
-            app:destination="@id/artworkListFragment" />
+            app:destination="@id/artworkListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
 
     <fragment
@@ -29,7 +31,9 @@
             app:destination="@id/departmentListFragment" />
         <action
             android:id="@+id/actionArtworkListToArtwork"
-            app:destination="@id/artworkFragment" />
+            app:destination="@id/artworkFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:popExitAnim="@android:anim/slide_out_right" />
         <argument
             android:name="departmentId"
             app:argType="string" />
