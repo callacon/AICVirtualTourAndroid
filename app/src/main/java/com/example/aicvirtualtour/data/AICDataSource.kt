@@ -26,17 +26,4 @@ class AICDataSource @Inject constructor(
         apiClient.searchAllArtwork(query, page)
 
     suspend fun getArtwork(id: Int): Response<Map<String, Artwork>> = apiClient.getArtworkById(id)
-
-    /**
-     * suspend fun getArtworkById(@Path("id") id: Int): Response<Map<String, Artwork>>
-     */
-
-    /**
-     * Takes an image ID and calls AIC's IIIF API to get an image. Picasso is a framework used for
-     * inserting images obtained through an HTTP request into an ImageView.
-     * More documentation on Picasso here: https://square.github.io/picasso/
-     */
-    fun loadImageFromPicasso(imageId: String): RequestCreator? {
-        return Picasso.get().load("https://www.artic.edu/iiif/2/$imageId/full/843,/0/default.jpg")
-    }
 }

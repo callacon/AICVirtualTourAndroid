@@ -20,7 +20,7 @@ data class ArtworkIds(
     @field:Json(name = "data") val ids: List<ArtworkId>
 )
 
-@Entity(tableName = "artworks")
+@Entity(tableName = "artworkIds")
 data class ArtworkId(
     @PrimaryKey
     @field:Json(name = "id") val id: Int,

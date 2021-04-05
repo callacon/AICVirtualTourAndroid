@@ -3,6 +3,8 @@ package com.example.aicvirtualtour.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
 import com.example.aicvirtualtour.models.*
+import com.squareup.picasso.Picasso
+import com.squareup.picasso.RequestCreator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -11,6 +13,7 @@ import javax.inject.Inject
 class AICRepository @Inject constructor(
     private val dataSource: AICDataSource,
     private val departmentDao: DepartmentDao,
+    private val artworksDao: ArtworksDao,
     private val artworkDao: ArtworkDao
 ) {
     suspend fun getDepartments(): Flow<ResponseState<List<Department>>> = flow {
@@ -31,10 +34,10 @@ class AICRepository @Inject constructor(
             try {
                 val response = dataSource.getArtworksInDepartment(departmentId, page)
                 if (response.body() != null) {
-                    artworkDao.delete()
-                    artworkDao.insert(response.body()!!.ids)
+                    artworksDao.delete()
+                    artworksDao.insert(response.body()!!.ids)
                 }
-                val cachedArtworks = artworkDao.get()
+                val cachedArtworks = artworksDao.get()
                 val pagination = response.body()!!.pagination
                 val data = setOf(pagination, cachedArtworks)
                 emit(ResponseState.Success(data))
@@ -49,10 +52,10 @@ class AICRepository @Inject constructor(
             try {
                 val response = dataSource.searchArtwork(searchQuery, page)
                 if (response.body() != null) {
-                    artworkDao.delete()
-                    artworkDao.insert(response.body()!!.ids)
+                    artworksDao.delete()
+                    artworksDao.insert(response.body()!!.ids)
                 }
-                val cachedArtworks = artworkDao.get()
+                val cachedArtworks = artworksDao.get()
                 val pagination = response.body()!!.pagination
                 val data = setOf(pagination, cachedArtworks)
                 emit(ResponseState.Success(data))
@@ -60,30 +63,27 @@ class AICRepository @Inject constructor(
                 emit(ResponseState.Error(e))
             }
         }
-//
-//    fun getArtwork(id: Int) = performNetworkCall(
-//        { dao.getArtworkById(id) },
-//        { dataSource.getArtwork(id) },
-//        { dao.insertArtwork(it.getValue("data")) }
-//    )
-//
-//    private fun <T, A> performNetworkCall(query: () -> LiveData<T>,
-//                                          call: suspend () -> Result<A>,
-//                                          save: suspend (A) -> Unit): LiveData<Result<T>> =
-//        liveData(Dispatchers.IO) {
-//            emit(Result.loading())
-//            val source = query.invoke().map{
-//                Result.success(it)
-//            }
-//            emitSource(source)
-//
-//            val response = call.invoke()
-//            if (response.status == Result.Status.SUCCESS) {
-//                save(response.data!!)
-//            } else if (response.status == Result.Status.ERROR) {
-//                emit(Result.error(response.message!!))
-//                emitSource(source)
-//            }
-//        }
+
+    fun getArtwork(id: Int): Flow<ResponseState<Artwork>> =
+        flow {
+            emit(ResponseState.Loading)
+            try {
+                val response = dataSource.getArtwork(id)
+                artworkDao.insert(response.body()?.get("data")!!)
+                val cachedArtwork = artworkDao.get(id)
+                emit(ResponseState.Success(cachedArtwork))
+            } catch (e: Exception) {
+                emit(ResponseState.Error(e))
+            }
+        }
+
+    /**
+     * Takes an image ID and calls AIC's IIIF API to get an image. Picasso is a framework used for
+     * inserting images obtained through an HTTP request into an ImageView.
+     * More documentation on Picasso here: https://square.github.io/picasso/
+     */
+    fun loadImageFromPicasso(imageId: String): RequestCreator? {
+        return Picasso.get().load("https://www.artic.edu/iiif/2/$imageId/full/843,/0/default.jpg")
+    }
 
 }

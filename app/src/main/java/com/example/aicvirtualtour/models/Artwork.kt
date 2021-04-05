@@ -1,8 +1,12 @@
 package com.example.aicvirtualtour.models
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 
- data class Artwork(
+@Entity(tableName = "artworks")
+data class Artwork(
+    @PrimaryKey
     @field:Json(name = "id") val id: String,
     @field:Json(name = "image_id") val imageId: String,
     @field:Json(name = "title") val title: String,

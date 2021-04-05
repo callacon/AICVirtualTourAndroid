@@ -4,18 +4,13 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.aicvirtualtour.models.ArtworkId
-import com.example.aicvirtualtour.models.ArtworkIds
-import com.example.aicvirtualtour.models.Pagination
+import com.example.aicvirtualtour.models.Artwork
 
 @Dao
 interface ArtworkDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(artworks: List<ArtworkId>)
+    suspend fun insert(artwork: Artwork)
 
-    @Query("SELECT * FROM artworks")
-    suspend fun get(): List<ArtworkId>
-
-    @Query("DELETE FROM artworks")
-    suspend fun delete()
+    @Query("SELECT * FROM artworks where id = :id")
+    suspend fun get(id: Int): Artwork
 }

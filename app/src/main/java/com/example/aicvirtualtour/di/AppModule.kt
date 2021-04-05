@@ -33,9 +33,10 @@ object AppModule {
     fun provideRepository(
         dataSource: AICDataSource,
         departmentDao: DepartmentDao,
+        artworksDao: ArtworksDao,
         artworkDao: ArtworkDao
     ): AICRepository {
-        return AICRepository(dataSource, departmentDao, artworkDao)
+        return AICRepository(dataSource, departmentDao, artworksDao, artworkDao)
     }
 
     @Singleton
@@ -71,6 +72,12 @@ object AppModule {
     @Provides
     fun provideDepartmentDao(db: AICDatabase): DepartmentDao {
         return db.departmentDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideArtworksDao(db: AICDatabase): ArtworksDao {
+        return db.artworksDao()
     }
 
     @Singleton
