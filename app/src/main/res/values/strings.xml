@@ -20,7 +20,7 @@
     <!-- Artwork List -->
     <string name="page_button_description">Pagination Button</string>
     <string name="pagination_text">Page %1$d of %2$d</string>
-    <string name="artwork_list_loading_error">Error loading artwork. Please try again later.</string>
+    <string name="search_department_title">Search results for "%1$s"</string>
 
     <!-- Artwork View -->
     <string name="artwork_image_description">Image for artwork</string>

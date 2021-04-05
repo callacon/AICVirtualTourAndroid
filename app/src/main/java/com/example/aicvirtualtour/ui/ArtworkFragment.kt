@@ -15,8 +15,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.aicvirtualtour.R
 import com.example.aicvirtualtour.data.ResponseState
 import com.example.aicvirtualtour.models.Artwork
-import com.example.aicvirtualtour.viewModels.ArtworkEvent.*
-import com.example.aicvirtualtour.viewModels.ArtworkViewModel
+import com.example.aicvirtualtour.ui.ArtworkEvent.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,7 +43,7 @@ class ArtworkFragment : Fragment() {
     }
 
     private fun setupObservers() {
-        viewModel.responseState.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.responseState.observe(viewLifecycleOwner, { response ->
             when (response) {
                 is ResponseState.Success<Artwork> -> {
                     displayProgressBar(false)
@@ -61,14 +60,16 @@ class ArtworkFragment : Fragment() {
                     }
                 }
                 is ResponseState.Error ->
-                    // TODO: Change this to say artwork, put in strings.xml
-                    Toast.makeText(requireContext(), "Error receiving departments. Please try again later.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), response.e.message.toString(), Toast.LENGTH_SHORT).show()
                 is ResponseState.Loading ->
                     displayProgressBar(true)
             }
         })
     }
 
+    /**
+     * Hide/show progress bar. Shows when page is loading data.
+     */
     private fun displayProgressBar(shouldShow: Boolean) {
         val progressBar = view?.findViewById<ProgressBar>(R.id.progress_bar)
         progressBar?.visibility = if(shouldShow) View.VISIBLE else View.GONE

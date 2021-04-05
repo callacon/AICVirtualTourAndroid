@@ -60,17 +60,18 @@ class DepartmentListFragment : Fragment() {
     }
 
     /**
-     * Observes Result from view model call to repository and displays based on status
+     * Observes Response from view model call to repository and adds data to Recycler View items if
+     * successful. Also updates progress bar before/after loading.
      */
     private fun setupObservers() {
-        viewModel.responseState.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.responseState.observe(viewLifecycleOwner, { response ->
             when (response) {
                 is ResponseState.Success<List<Department>> -> {
                     displayProgressBar(false)
                     listAdapter.setItems(response.data)
                 }
                 is ResponseState.Error ->
-                    Toast.makeText(requireContext(), getString(R.string.department_loading_error), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), response.e.message.toString(), Toast.LENGTH_SHORT).show()
                 is ResponseState.Loading ->
                     displayProgressBar(true)
             }
@@ -107,8 +108,11 @@ class DepartmentListFragment : Fragment() {
                     val enteredText = searchBar.text.toString()
                     if (enteredText.isNotBlank()) {
                         view?.findNavController()?.navigate(
+                            // Sends arguments to ArtworkList. No departmentId because this is a search query
                             DepartmentListFragmentDirections.actionDepartmentListToSearchArtwork(
-                                "", enteredText, true
+                                "",
+                                getString(R.string.search_department_title, enteredText),
+                                true
                             )
                         )
                     }
@@ -127,6 +131,9 @@ class DepartmentListFragment : Fragment() {
         view?.findViewById<TextView>(R.id.searchBar)?.isVisible = searchBarDisplayed
     }
 
+    /**
+     * Hide/show progress bar. Shows when page is loading data.
+     */
     private fun displayProgressBar(shouldShow: Boolean) {
         val progressBar = view?.findViewById<ProgressBar>(R.id.progress_bar)
         progressBar?.visibility = if(shouldShow) View.VISIBLE else View.GONE

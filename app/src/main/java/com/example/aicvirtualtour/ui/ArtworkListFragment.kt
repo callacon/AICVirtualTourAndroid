@@ -50,18 +50,11 @@ class ArtworkListFragment : Fragment() {
         // Get arguments passed from DepartmentListView
         val args: ArtworkListFragmentArgs by navArgs()
 
-//        if (args.isSearchView) {
-//            view.findViewById<TextView>(R.id.departmentNameText).text = searchArgs.searchQuery
-//            viewModel.searchQuery = searchArgs.searchQuery
-//            isSearchView = true
-//        } else {
-//            view.findViewById<TextView>(R.id.departmentNameText).text = args.departmentTitle
-//            viewModel.departmentId = args.departmentId
-//        }
-
         // Set the page title from the navArgs
         view.findViewById<TextView>(R.id.departmentNameText).text = args.departmentTitle
-        // Set the department ID for the view model so it can use it for the network call
+
+        // View Model will either need a department ID or search query to execute the API call.
+        // If this list is being populated from a department, set its ID, otherwise set the search query term.
         if (!args.isSearchView) {
             viewModel.departmentId = args.departmentId
         } else {
@@ -85,18 +78,23 @@ class ArtworkListFragment : Fragment() {
         }
     }
 
+    /**
+     * Observes Response from view model call to repository and adds data to Recycler View items if
+     * successful. Also updates progress bar before/after loading.
+     */
     private fun setupObservers() {
-        viewModel.responseState.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.responseState.observe(viewLifecycleOwner, { response ->
             when (response) {
                 is ResponseState.Success<Set<Any>> -> {
                     displayProgressBar(false)
+                    // Response is in the form of a Set because we need to receive artworks and pagination data
                     updatePaginationDisplay(response.data.elementAt(0) as Pagination)
                     (response.data.elementAt(1) as? List<ArtworkId>)?.let {
                         listAdapter.setItems(it)
                     }
                 }
                 is ResponseState.Error ->
-                    Toast.makeText(requireContext(), getString(R.string.artwork_list_loading_error), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), response.e.message.toString(), Toast.LENGTH_SHORT).show()
                 is ResponseState.Loading ->
                     displayProgressBar(true)
             }
@@ -133,6 +131,9 @@ class ArtworkListFragment : Fragment() {
         paginationText?.text = getString(R.string.pagination_text, pagination.currentPage, pagination.totalPages)
     }
 
+    /**
+     * Hide/show progress bar. Shows when page is loading data.
+     */
     private fun displayProgressBar(shouldShow: Boolean) {
         val progressBar = view?.findViewById<ProgressBar>(R.id.progress_bar)
         progressBar?.visibility = if(shouldShow) View.VISIBLE else View.GONE

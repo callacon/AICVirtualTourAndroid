@@ -1,15 +1,18 @@
 package com.example.aicvirtualtour.data
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.liveData
 import com.example.aicvirtualtour.models.*
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.RequestCreator
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
+/**
+ * This repository implements the Single Source of Truth data strategy. It will only return data that is
+ * cached in the database to the view models. Each of these functions makes an API call, takes the response
+ * and stores the data if successful, and then provides that cached data from the database to the
+ * view model that calls it.
+ */
 class AICRepository @Inject constructor(
     private val dataSource: AICDataSource,
     private val departmentDao: DepartmentDao,

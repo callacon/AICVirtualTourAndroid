@@ -24,7 +24,6 @@ class ArtworkViewModel @Inject constructor(
     val responseState: LiveData<ResponseState<Artwork>>
         get() = _responseState
     var artworkId: Int? = null
-    var imageId: Int? = null
 
     fun performEvent(artworkEvent: ArtworkEvent) {
         viewModelScope.launch {

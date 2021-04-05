@@ -13,10 +13,12 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.Query
 import javax.inject.Inject
 
+/**
+ * Data Source that handles calls to the API service.
+ */
 class AICDataSource @Inject constructor(
     private val apiClient: AICApiClient
 ) {
-
     suspend fun getDepartments(): Response<Departments> = apiClient.getAllDepartments()
 
     suspend fun getArtworksInDepartment(id: String, page: Int): Response<ArtworkIds> =
