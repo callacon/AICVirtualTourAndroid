@@ -1,4 +1,4 @@
-package com.example.aicvirtualtour.viewModels
+package com.example.aicvirtualtour.ui
 
 import android.media.Image
 import android.widget.ImageView
@@ -9,7 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.aicvirtualtour.data.AICRepository
 import com.example.aicvirtualtour.data.ResponseState
 import com.example.aicvirtualtour.models.Artwork
-import com.example.aicvirtualtour.viewModels.ArtworkEvent.*
+import com.example.aicvirtualtour.ui.ArtworkEvent.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

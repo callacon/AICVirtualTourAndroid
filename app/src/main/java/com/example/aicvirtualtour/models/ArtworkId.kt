@@ -1,6 +1,5 @@
 package com.example.aicvirtualtour.models
 
-import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.squareup.moshi.Json

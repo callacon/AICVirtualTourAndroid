@@ -1,6 +1,5 @@
-package com.example.aicvirtualtour.viewModels
+package com.example.aicvirtualtour.ui
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -8,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.aicvirtualtour.data.AICRepository
 import com.example.aicvirtualtour.data.ResponseState
 import com.example.aicvirtualtour.models.Department
-import com.example.aicvirtualtour.viewModels.DepartmentListEvent.*
+import com.example.aicvirtualtour.ui.DepartmentListEvent.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

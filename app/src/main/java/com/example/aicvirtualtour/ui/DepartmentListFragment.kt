@@ -1,4 +1,4 @@
-package com.example.aicvirtualtour.fragments
+package com.example.aicvirtualtour.ui
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -20,8 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.aicvirtualtour.*
 import com.example.aicvirtualtour.data.ResponseState
 import com.example.aicvirtualtour.models.Department
-import com.example.aicvirtualtour.viewModels.DepartmentListEvent.*
-import com.example.aicvirtualtour.viewModels.DepartmentListViewModel
+import com.example.aicvirtualtour.ui.DepartmentListEvent.*
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -71,7 +70,7 @@ class DepartmentListFragment : Fragment() {
                     listAdapter.setItems(response.data)
                 }
                 is ResponseState.Error ->
-                    Toast.makeText(requireContext(), "Error receiving departments. Please try again later.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.department_loading_error), Toast.LENGTH_SHORT).show()
                 is ResponseState.Loading ->
                     displayProgressBar(true)
             }
@@ -108,7 +107,6 @@ class DepartmentListFragment : Fragment() {
                     val enteredText = searchBar.text.toString()
                     if (enteredText.isNotBlank()) {
                         view?.findNavController()?.navigate(
-                            // TODO: make this also navigate to artwork list and rework class to take different amounts of args
                             DepartmentListFragmentDirections.actionDepartmentListToSearchArtwork(
                                 "", enteredText, true
                             )

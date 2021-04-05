@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/departmentListFragment"
-        android:name="com.example.aicvirtualtour.fragments.DepartmentListFragment"
+        android:name="com.example.aicvirtualtour.ui.DepartmentListFragment"
         android:label="@string/department_list_fragment_label"
         tools:layout="@layout/department_list">
         <action
@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/artworkListFragment"
-        android:name="com.example.aicvirtualtour.fragments.ArtworkListFragment"
+        android:name="com.example.aicvirtualtour.ui.ArtworkListFragment"
         android:label="@string/artwork_list_fragment_label"
         tools:layout="@layout/artwork_list">
 
@@ -43,7 +43,7 @@
 
     <fragment
         android:id="@+id/artworkFragment"
-        android:name="com.example.aicvirtualtour.fragments.ArtworkFragment"
+        android:name="com.example.aicvirtualtour.ui.ArtworkFragment"
         android:label="@string/artwork_fragment_label"
         tools:layout="@layout/artwork">
 

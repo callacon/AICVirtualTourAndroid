@@ -1,7 +1,6 @@
-package com.example.aicvirtualtour.fragments
+package com.example.aicvirtualtour.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,8 +19,7 @@ import com.example.aicvirtualtour.*
 import com.example.aicvirtualtour.data.ResponseState
 import com.example.aicvirtualtour.models.ArtworkId
 import com.example.aicvirtualtour.models.Pagination
-import com.example.aicvirtualtour.viewModels.ArtworkListEvent.*
-import com.example.aicvirtualtour.viewModels.ArtworkListViewModel
+import com.example.aicvirtualtour.ui.ArtworkListEvent.*
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -36,8 +34,6 @@ class ArtworkListFragment : Fragment() {
     private val viewModel: ArtworkListViewModel by viewModels()
     private lateinit var artworkList: RecyclerView
     private var listAdapter = ArtworkListAdapter(emptyList())
-
-    private var currentPage: Int = 1
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -100,8 +96,7 @@ class ArtworkListFragment : Fragment() {
                     }
                 }
                 is ResponseState.Error ->
-                    // TODO: Change this to say artwork, put in strings.xml
-                    Toast.makeText(requireContext(), "Error receiving departments. Please try again later.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.artwork_list_loading_error), Toast.LENGTH_SHORT).show()
                 is ResponseState.Loading ->
                     displayProgressBar(true)
             }

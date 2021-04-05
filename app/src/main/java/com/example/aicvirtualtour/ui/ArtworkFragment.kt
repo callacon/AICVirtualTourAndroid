@@ -1,4 +1,4 @@
-package com.example.aicvirtualtour.fragments
+package com.example.aicvirtualtour.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater

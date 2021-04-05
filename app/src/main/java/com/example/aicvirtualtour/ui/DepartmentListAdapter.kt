@@ -1,12 +1,11 @@
-package com.example.aicvirtualtour
+package com.example.aicvirtualtour.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.example.aicvirtualtour.databinding.DepartmentListItemBinding
-import com.example.aicvirtualtour.fragments.DepartmentListFragmentDirections
+import com.example.aicvirtualtour.R
 import com.example.aicvirtualtour.models.Department
 
 /**

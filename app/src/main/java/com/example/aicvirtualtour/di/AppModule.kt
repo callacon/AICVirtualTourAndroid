@@ -2,12 +2,9 @@ package com.example.aicvirtualtour.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.example.aicvirtualtour.API_BASE_URL
-import com.example.aicvirtualtour.ApplicationComponent
 import com.example.aicvirtualtour.BaseApplication
 import com.example.aicvirtualtour.data.*
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
